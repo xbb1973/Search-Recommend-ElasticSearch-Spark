@@ -1,0 +1,69 @@
+spring:
+  datasource:
+    #   数据源基本配置
+    username: root
+    password: 123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql:///stores?useSSL=false&useUnicode=true&characterEncoding=utf-8
+    type: com.alibaba.druid.pool.DruidDataSource
+    #   数据源其他配置
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+#    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    #   配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+    filters: stat,wall,log4j
+    maxPoolPreparedStatementPerConnectionSize: 20
+    useGlobalDataSourceStat: true
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+
+#日志配置
+##logging.path=
+#  # 不指定路径在当前项目下生成springboot.log日志
+#  # 可以指定完整的路径；
+#  #logging.file=G:/springboot.log
+#
+## 在当前磁盘的根路径下创建spring文件夹和里面的log文件夹；使用 spring.log 作为默认文件
+#  logging.path=/spring/log
+#
+## 在控制台输出的日志的格式
+#  logging.pattern.console=%d{yyyy‐MM‐dd} [%thread] %‐5level %logger{50} ‐ %msg%n
+#  # 指定文件中日志输出的格式
+#  logging.pattern.file=%d{yyyy‐MM‐dd} === [%thread] === %‐5level === %logger{50} ==== %msg%n
+logging:
+  level:
+    root: warn
+    slf.xbb.dao: trace
+  pattern:
+    console: '%d{yyyy‐MM‐dd} [%thread] ‐ %msg%n'
+
+#mp配置
+mybatis-plus:
+  mapper-locations: classpath:mybatis/mapping/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      insert-strategy: default
+      update-strategy: default
+      select-strategy: default
+
+#mybatis配置
+#mybatis:
+#  # 指定全局配置文件位置
+#  config-location: classpath:mybatis/mybatis-config.xml
+#  # 指定sql映射文件位置
+#  mapper-locations: classpath:mybatis/mapping/*.xml
+#    schema:
+#      - classpath:sql/department.sql
+#      - classpath:sql/employee.sql
+
+
+
