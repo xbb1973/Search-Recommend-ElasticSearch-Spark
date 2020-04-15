@@ -1,5 +1,7 @@
 package slf.xbb.stores.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import java.time.LocalDateTime;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
@@ -14,7 +16,7 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author xbb
- * @since 2020-04-13
+ * @since 2020-04-15
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -23,6 +25,9 @@ import lombok.experimental.Accessors;
 public class Category implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
 
     private LocalDateTime createdAt;
 

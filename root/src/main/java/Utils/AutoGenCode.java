@@ -75,8 +75,8 @@ public class AutoGenCode {
 
         // 包配置
         PackageConfig pc = new PackageConfig();
+        pc.setParent(scanner("子模块内的模块名/ 包名, 例如slf.xbb/ org.jinfu/ "));
         pc.setModuleName(scanner("子模块内的模块名/ 包名"));
-        pc.setParent("slf.xbb");
         mpg.setPackageInfo(pc);
 
         // 自定义配置
@@ -138,7 +138,8 @@ public class AutoGenCode {
         // 公共父类
         // strategy.setSuperControllerClass("你自己的父类控制器,没有就不用设置!");
         // 写于父类中的公共字段
-        strategy.setSuperEntityColumns("id");
+        // 因为使用了父类继承的id，如果你没有继承对应的父类，那就没有id。
+        // strategy.setSuperEntityColumns("id");
         strategy.setInclude(scanner("表名，多个英文逗号分割").split(","));
         strategy.setControllerMappingHyphenStyle(true);
         strategy.setTablePrefix(pc.getModuleName() + "_");

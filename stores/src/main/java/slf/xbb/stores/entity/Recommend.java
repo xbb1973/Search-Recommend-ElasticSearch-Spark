@@ -13,7 +13,7 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author xbb
- * @since 2020-04-13
+ * @since 2020-04-15
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -22,6 +22,8 @@ import lombok.experimental.Accessors;
 public class Recommend implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    private Integer id;
 
     private String recommend;
 

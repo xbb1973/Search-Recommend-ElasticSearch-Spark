@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  * </p>
  *
  * @author xbb
- * @since 2020-04-13
+ * @since 2020-04-15
  */
 @Service
 public class RecommendServiceImpl extends ServiceImpl<RecommendMapper, Recommend> implements IRecommendService {

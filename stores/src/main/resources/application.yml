@@ -1,3 +1,4 @@
+
 spring:
   datasource:
     #   数据源基本配置
@@ -23,6 +24,15 @@ spring:
     maxPoolPreparedStatementPerConnectionSize: 20
     useGlobalDataSourceStat: true
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+  #拒绝默认404的处理方式，再使用mvc的配置，当访问找不到对应的controler抛出对应异常
+  #add-mappings=true表示如果所有的controller都没有命中，则使用默认的静态资源处理器做匹配
+  #但是这两句代码添加之后，又会导致静态资源不可使用。
+  resources:
+    add-mappings: true
+    static-locations: classpath:/static/*
+  mvc:
+    throw-exception-if-no-handler-found: true
+    static-path-pattern: /static/**
 
 #日志配置
 ##logging.path=
@@ -40,13 +50,13 @@ spring:
 logging:
   level:
     root: warn
-    slf.xbb.dao: trace
+    slf.xbb.stores.mapper: trace
   pattern:
     console: '%d{yyyy‐MM‐dd} [%thread] ‐ %msg%n'
 
 #mp配置
 mybatis-plus:
-  mapper-locations: classpath:mybatis/mapping/*.xml
+  mapper-locations: /mapper/stores/*.xml
   configuration:
     map-underscore-to-camel-case: true
   global-config:
@@ -65,5 +75,5 @@ mybatis-plus:
 #      - classpath:sql/department.sql
 #      - classpath:sql/employee.sql
 
-
-
+server:
+  port: 8080
