@@ -8,7 +8,7 @@ package slf.xbb.stores.common;
  * @version:
  */
 public interface CommonError {
-    public int getErrCode();
+    public Integer getErrCode();
     public String getErrMsg();
     public CommonError setErrMsg(String errMsg);
 }

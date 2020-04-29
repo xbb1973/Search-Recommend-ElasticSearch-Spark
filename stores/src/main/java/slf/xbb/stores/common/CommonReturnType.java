@@ -24,15 +24,15 @@ public class CommonReturnType{
      */
     private Object data;
 
-    private List<Object> dataList;
+    // private List<Object> dataList;
 
     public static CommonReturnType create(Object result) {
         return CommonReturnType.create(result, "success");
     }
 
-    public static CommonReturnType create(List<Object> result) {
-        return CommonReturnType.create(result, "success");
-    }
+    // public static CommonReturnType create(List<Object> result) {
+    //     return CommonReturnType.create(result, "success");
+    // }
 
     public static CommonReturnType create(Object result, String status) {
         CommonReturnType type = new CommonReturnType();
@@ -41,10 +41,10 @@ public class CommonReturnType{
         return type;
     }
 
-    public static CommonReturnType create(List<Object> result, String status) {
-        CommonReturnType type = new CommonReturnType();
-        type.setStatus(status);
-        type.setDataList(result);
-        return type;
-    }
+    // public static CommonReturnType create(List<Object> result, String status) {
+    //     CommonReturnType type = new CommonReturnType();
+    //     type.setStatus(status);
+    //     type.setDataList(result);
+    //     return type;
+    // }
 }

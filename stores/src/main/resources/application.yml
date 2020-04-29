@@ -29,10 +29,16 @@ spring:
   #但是这两句代码添加之后，又会导致静态资源不可使用。
   resources:
     add-mappings: true
-    static-locations: classpath:/static/*
+#    static-locations: classpath:/static/**
   mvc:
     throw-exception-if-no-handler-found: true
+    # 接入前端静态资源页面
     static-path-pattern: /static/**
+
+  # thymeleaf相关配置
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
 
 #日志配置
 ##logging.path=
@@ -50,7 +56,8 @@ spring:
 logging:
   level:
     root: warn
-    slf.xbb.stores.mapper: trace
+    # slf.xbb.stores.mapper: trace
+    slf.xbb.stores.*: trace
   pattern:
     console: '%d{yyyy‐MM‐dd} [%thread] ‐ %msg%n'
 

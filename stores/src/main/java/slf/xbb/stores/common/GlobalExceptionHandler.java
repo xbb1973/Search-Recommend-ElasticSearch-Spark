@@ -10,7 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Created by hzllb on 2019/7/9.
+ * @author ：xbb
+ * @date ：Created in 2020/3/31 4:48 上午
+ * @description：全局拦截
+ * @modifiedBy：
+ * @version:
  */
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -19,7 +23,8 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public CommonReturnType doError(HttpServletRequest servletRequest, HttpServletResponse httpServletResponse, Exception ex) {
         if (ex instanceof BussinessException) {
-            return CommonReturnType.create(((BussinessException) ex).getCommonError(), "fail");
+            // return CommonReturnType.create(((BussinessException) ex).getCommonError(), "fail");
+            return CommonReturnType.create(((BussinessException) ex).getCommonError().getErrMsg(), "fail");
         } else if (ex instanceof NoHandlerFoundException) {
             CommonError commonError = EmBusinessError.NO_HANDLER_FOUND;
             return CommonReturnType.create(commonError, "fail");
@@ -27,8 +32,9 @@ public class GlobalExceptionHandler {
             CommonError commonError = EmBusinessError.BIND_EXCEPTION_ERROR;
             return CommonReturnType.create(commonError, "fail");
         } else {
-            CommonError commonError = EmBusinessError.UNKNOWN_ERROR;
-            return CommonReturnType.create(commonError, "fail");
+            // CommonError commonError = EmBusinessError.UNKNOWN_ERROR;
+            // return CommonReturnType.create(commonError, "fail");
+            return CommonReturnType.create(ex.getMessage(), "fail");
         }
 
     }
