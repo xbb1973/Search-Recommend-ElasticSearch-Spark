@@ -1,5 +1,6 @@
 package slf.xbb.stores.service;
 
+import slf.xbb.stores.common.BussinessException;
 import slf.xbb.stores.entity.Seller;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -16,5 +17,6 @@ import java.util.List;
 public interface ISellerService extends IService<Seller> {
     // Seller getSeller(Integer id);
     // List<Seller> listSellers();
-
+    Seller create(Seller seller);
+    Seller changeStatus(Integer id, Integer diableFlag) throws BussinessException;
 }

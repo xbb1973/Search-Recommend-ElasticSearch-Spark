@@ -67,6 +67,11 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
+        <!--<dependency>-->
+        <!--    <groupId>com.github.pagehelper</groupId>-->
+        <!--    <artifactId>pagehelper-spring-boot-starter</artifactId>-->
+        <!--    <version>${pagehelper.version}</version>-->
+        <!--</dependency>-->
     </dependencies>
 
 

@@ -84,3 +84,8 @@ mybatis-plus:
 
 server:
   port: 8080
+
+#admin官方账号
+admin:
+  email: 123
+  encryptPassword: ICy5YqxZB1uWSwcVLSNLcA==

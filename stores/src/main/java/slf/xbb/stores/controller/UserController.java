@@ -3,14 +3,12 @@ package slf.xbb.stores.controller;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import slf.xbb.stores.common.BussinessException;
 import slf.xbb.stores.common.CommonReturnType;
@@ -38,7 +36,7 @@ import java.security.NoSuchAlgorithmException;
 // @RequestMapping("/user")
 public class UserController {
 
-    public static String CURRENT_USER = "current_user";
+    public static String CURRENT_USER_SESSION = "currentUserSession";
 
     @Autowired
     IUserService userService;
@@ -97,7 +95,7 @@ public class UserController {
             throw new BussinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR, CommonUtils.processErrorString(bindingResult));
         }
         User user = userService.login(loginReq.getTelphone(), loginReq.getPassword());
-        httpServletRequest.getSession().setAttribute(CURRENT_USER, user);
+        httpServletRequest.getSession().setAttribute(CURRENT_USER_SESSION, user);
         return CommonReturnType.create(user);
     }
     @RequestMapping("/logout")
@@ -109,8 +107,8 @@ public class UserController {
 
     @RequestMapping("/getCurrentUser")
     @ResponseBody
-    public User getCurrentUser(){
-        User user = (User) httpServletRequest.getSession().getAttribute(CURRENT_USER);
-        return user;
+    public CommonReturnType getCurrentUser(){
+        User user = (User) httpServletRequest.getSession().getAttribute(CURRENT_USER_SESSION);
+        return CommonReturnType.create(user);
     }
 }

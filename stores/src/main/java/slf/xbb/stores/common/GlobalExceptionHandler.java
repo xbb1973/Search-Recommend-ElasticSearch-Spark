@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
     public CommonReturnType doError(HttpServletRequest servletRequest, HttpServletResponse httpServletResponse, Exception ex) {
         if (ex instanceof BussinessException) {
             // return CommonReturnType.create(((BussinessException) ex).getCommonError(), "fail");
-            return CommonReturnType.create(((BussinessException) ex).getCommonError().getErrMsg(), "fail");
+            return CommonReturnType.create(((BussinessException) ex).getCommonError(), "fail");
         } else if (ex instanceof NoHandlerFoundException) {
             CommonError commonError = EmBusinessError.NO_HANDLER_FOUND;
             return CommonReturnType.create(commonError, "fail");
