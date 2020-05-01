@@ -7,6 +7,7 @@ import slf.xbb.stores.entity.Seller;
 import slf.xbb.stores.entity.Shop;
 import com.baomidou.mybatisplus.extension.service.IService;
 import slf.xbb.stores.vo.PageQuery;
+import slf.xbb.stores.vo.RecommendReq;
 
 import java.util.List;
 
@@ -23,4 +24,5 @@ public interface IShopService extends IService<Shop> {
     ShopBo get(Integer id);
     List<ShopBo> getShopList();
     PageInfo<ShopBo> getPage(PageQuery pageQuery);
+    List<ShopBo> recommend(RecommendReq recommendReq) throws BussinessException;
 }

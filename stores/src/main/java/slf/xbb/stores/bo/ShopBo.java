@@ -1,9 +1,12 @@
 package slf.xbb.stores.bo;
 
 import lombok.Data;
+import lombok.Value;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import slf.xbb.stores.entity.Category;
 import slf.xbb.stores.entity.Seller;
 
+import javax.validation.constraints.Min;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -47,8 +50,10 @@ public class ShopBo {
 
     private String iconUrl;
 
-    // 扩展，多对一的关系
+    // 门店与类目/商家是多对一的关系
     private Category category;
-
     private Seller seller;
+
+    @Min(value = 0, message = "最小距离不可小于0")
+    private Integer distance;
 }
