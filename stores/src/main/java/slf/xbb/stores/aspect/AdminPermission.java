@@ -1,4 +1,4 @@
-package slf.xbb.stores.common;
+package slf.xbb.stores.aspect;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -15,5 +15,6 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AdminPermission {
+    // "application/json"
     String produceType() default "text/html";
 }

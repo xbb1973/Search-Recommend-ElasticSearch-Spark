@@ -184,7 +184,7 @@ License: You must have a valid license purchased only from themeforest(the above
         Index.init();
 
 
-        var baseUrl = "/stores/seller/index?page="
+        var baseUrl = "/admin/seller/index?page="
         setUrl(baseUrl);
         var totalSize = /*[[${data.total}]]*/;
         var countPerPage = /*[[${data.pageSize}]]*/;
@@ -195,11 +195,8 @@ License: You must have a valid license purchased only from themeforest(the above
             $("#page-container").hide();
         }
 
-        // $("a[id^='createButton']").on("click", function(){
-        //     window.location.href = "/stores/seller/createPage";
-        // });
         $(".add").on("click", function(){
-            window.location.href = "/stores/seller/createPage";
+            window.location.href = "/admin/seller/createPage";
         });
 
         $("a[id^='up']").on('click',function(){
@@ -211,14 +208,14 @@ License: You must have a valid license purchased only from themeforest(the above
             $.ajax({
                 type : "POST",
                 contentType : "application/x-www-form-urlencoded",
-                url : "/stores/seller/up",
+                url : "/admin/seller/up",
                 data: {
                     "id": id,
                 },
                 success : function(data){
                     if(data.status == 'success'){
                         alert("启用商户成功");
-                        window.location.href = "/stores/seller/index";
+                        window.location.href = "/admin/seller/index";
                     }else{
                         alert("启用商户失败，原因为"+data.data.errMsg);
                     }
@@ -238,14 +235,14 @@ License: You must have a valid license purchased only from themeforest(the above
             $.ajax({
                 type : "POST",
                 contentType : "application/x-www-form-urlencoded",
-                url : "/stores/seller/down",
+                url : "/admin/seller/down",
                 data: {
                     "id": id,
                 },
                 success : function(data){
                     if(data.status == 'success'){
                         alert("禁用商户成功");
-                        window.location.href = "/stores/seller/index";
+                        window.location.href = "/admin/seller/index";
                     }else{
                         alert("禁用商户失败，原因为"+data.data.errMsg);
                     }

@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.servlet.ModelAndView;
+import slf.xbb.stores.aspect.AdminPermission;
 import slf.xbb.stores.common.*;
 import slf.xbb.stores.entity.Seller;
 import slf.xbb.stores.service.ISellerService;
@@ -26,12 +27,12 @@ import java.util.List;
  * @author xbb
  * @since 2020-04-13
  */
-@Controller
-@RequestMapping("/stores/seller")
+@Controller("/admin/seller")
+@RequestMapping("/admin/seller")
 public class SellerController {
 
     @Autowired
-    ISellerService sellerService;
+    private ISellerService sellerService;
 
     public static String controllerAttributeName = "CONTROLLER_NAME";
     public static String actionAttributeName = "ACTION_NAME";
@@ -71,12 +72,13 @@ public class SellerController {
         Seller seller = new Seller();
         seller.setName(sellerCreateReq.getName());
         sellerService.create(seller);
-        return "redirect:/stores/seller/index";
+        return "redirect:/admin/seller/index";
     }
 
     @RequestMapping("/get")
     @ResponseBody
-    CommonReturnType getSeller(@RequestParam("id") Integer id) throws BussinessException {
+    @AdminPermission(produceType = "application/json")
+    public CommonReturnType getSeller(@RequestParam("id") Integer id) throws BussinessException {
         Seller seller = sellerService.getById(id);
         if (seller == null) {
             // return CommonReturnType.create(EmBusinessError.PARAMETER_VALIDATION_ERROR, "fail");
@@ -86,16 +88,16 @@ public class SellerController {
     }
 
     @RequestMapping(value="down",method = RequestMethod.POST)
-    @AdminPermission
     @ResponseBody
+    @AdminPermission(produceType = "application/json")
     public CommonReturnType down(@RequestParam(value="id")Integer id) throws BussinessException {
         Seller seller = sellerService.changeStatus(id,1);
         return CommonReturnType.create(seller);
     }
 
     @RequestMapping(value="up",method = RequestMethod.POST)
-    @AdminPermission
     @ResponseBody
+    @AdminPermission(produceType = "application/json")
     public CommonReturnType up(@RequestParam(value="id")Integer id) throws BussinessException {
         Seller seller = sellerService.changeStatus(id,0);
         return CommonReturnType.create(seller);

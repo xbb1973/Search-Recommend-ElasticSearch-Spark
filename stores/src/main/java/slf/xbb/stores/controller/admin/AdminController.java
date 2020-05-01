@@ -7,11 +7,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-import slf.xbb.stores.common.AdminPermission;
+import slf.xbb.stores.aspect.AdminPermission;
 import slf.xbb.stores.common.BussinessException;
-import slf.xbb.stores.common.CommonReturnType;
 import slf.xbb.stores.common.EmBusinessError;
 import sun.misc.BASE64Encoder;
 
@@ -27,8 +25,8 @@ import java.security.NoSuchAlgorithmException;
  * @modifiedBy：
  * @version:
  */
-@Controller("/admin")
-@RequestMapping("/stores/admin")
+@Controller("/admin/admin")
+@RequestMapping("/admin/admin")
 public class AdminController {
 
     @Value("${admin.email}")
@@ -71,7 +69,7 @@ public class AdminController {
 
         if (email.equals(this.email) && encodeByMd5(password).equals(encryptPassword)) {
             httpServletRequest.getSession().setAttribute(CURRENT_ADMIN_SESSION, email);
-            return "redirect:/stores/admin/index";
+            return "redirect:/admin/admin/index";
         } else {
             throw new BussinessException(EmBusinessError.LOGIN_FAIL, "email or password密码错误");
         }

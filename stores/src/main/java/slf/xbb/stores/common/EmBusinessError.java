@@ -28,12 +28,13 @@ public enum EmBusinessError implements CommonError {
     PARAMETER_VALIDATION_ERROR(500, "参数不合法"),
     // 用户信息错误
     USER_NOT_EXIST(501, "用户不存在"),
-    // 未知错误错误
+    // 未知错误
     UNKNOWN_ERROR(502, "未知错误"),
-    // 未知错误错误
+    //
     USER_LOGIN_ERROR(503, "用户手机号或者密码错误"),
     STOCK_NOT_ENOUGH(504, "库存不足"),
-    USER_NOT_LOGIN(505, "用户未登陆");
+    USER_NOT_LOGIN(505, "用户未登陆"),
+    CATEGORY_DUP_ERROR(506, "品类已存在");
 
     private Integer errCode;
     private String errMsg;

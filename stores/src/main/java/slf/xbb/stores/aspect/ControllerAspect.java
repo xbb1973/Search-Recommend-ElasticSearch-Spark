@@ -1,15 +1,12 @@
-package slf.xbb.stores.controller;
+package slf.xbb.stores.aspect;
 
 import com.alibaba.druid.util.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import slf.xbb.stores.common.AdminPermission;
-import slf.xbb.stores.common.BussinessException;
 import slf.xbb.stores.common.CommonReturnType;
 import slf.xbb.stores.common.EmBusinessError;
 import slf.xbb.stores.controller.admin.AdminController;
@@ -50,7 +47,7 @@ public class ControllerAspect {
         String email = (String) httpServletRequest.getSession().getAttribute(AdminController.CURRENT_ADMIN_SESSION);
         if (StringUtils.isEmpty(email)){
             if (adminPermission.produceType().equals("text/html")) {
-                httpServletResponse.sendRedirect("/stores/admin/loginPage");
+                httpServletResponse.sendRedirect("/admin/admin/loginPage");
                 return null;
             } else {
                 // throw new BussinessException(EmBusinessError.USER_NOT_LOGIN);
