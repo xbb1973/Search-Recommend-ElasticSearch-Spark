@@ -40,54 +40,15 @@ public class CategoryController {
     public static String actionAttributeName = "ACTION_NAME";
     public static String controllerAttributeValue = "category";
 
-    @RequestMapping("/index")
-    @AdminPermission
-    public ModelAndView index(PageQuery pageQuery)  {
+    @RequestMapping("/list")
+    @ResponseBody
+    public CommonReturnType list(/*PageQuery pageQuery*/) {
         // 分页
-        PageHelper.startPage(pageQuery.getPage(), pageQuery.getSize());
+        // PageHelper.startPage(pageQuery.getPage(), pageQuery.getSize());
         //categoryService.list
         List<Category> categoryList = categoryService.list();
-        PageInfo<Category> categoryPageInfo = new PageInfo<>(categoryList);
+        // PageInfo<Category> categoryPageInfo = new PageInfo<>(categoryList);
 
-        ModelAndView modelAndView = new ModelAndView("/category/index.html");
-        modelAndView.addObject("data", categoryPageInfo);
-        modelAndView.addObject(controllerAttributeName, controllerAttributeValue);
-        modelAndView.addObject(controllerAttributeValue, "index");
-        return modelAndView;
-    }
-
-    @RequestMapping("/createPage")
-    @AdminPermission
-    public ModelAndView createPage() {
-        ModelAndView modelAndView = new ModelAndView("/category/create.html");
-        modelAndView.addObject(controllerAttributeName, controllerAttributeValue);
-        modelAndView.addObject(controllerAttributeValue, "create");
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
-    @AdminPermission
-    public String create(@Valid CategoryCreateReq categoryCreateReq, BindingResult bindingResult) throws BussinessException {
-        if (bindingResult.hasErrors()){
-            throw new BussinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR, CommonUtils.processErrorString(bindingResult));
-        }
-        Category category = new Category();
-        category.setName(categoryCreateReq.getName());
-        category.setIconUrl(categoryCreateReq.getIconUrl());
-        category.setSort(categoryCreateReq.getSort());
-        categoryService.create(category);
-        return "redirect:/stores/category/index";
-    }
-
-    @RequestMapping("/get")
-    @ResponseBody
-    @AdminPermission(produceType = "application/json")
-    public CommonReturnType getCategory(@RequestParam("id") Integer id) throws BussinessException {
-        Category category = categoryService.getById(id);
-        if (category == null) {
-            // return CommonReturnType.create(EmBusinessError.PARAMETER_VALIDATION_ERROR, "fail");
-            throw new BussinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR, "id不合法/ 数据库中找不到此id");
-        }
-        return CommonReturnType.create(category);
+        return CommonReturnType.create(categoryList);
     }
 }

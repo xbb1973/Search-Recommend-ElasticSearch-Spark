@@ -11,6 +11,10 @@ import org.springframework.web.servlet.ModelAndView;
 import slf.xbb.stores.aspect.AdminPermission;
 import slf.xbb.stores.common.BussinessException;
 import slf.xbb.stores.common.EmBusinessError;
+import slf.xbb.stores.service.ICategoryService;
+import slf.xbb.stores.service.ISellerService;
+import slf.xbb.stores.service.IShopService;
+import slf.xbb.stores.service.IUserService;
 import sun.misc.BASE64Encoder;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,6 +42,18 @@ public class AdminController {
     @Autowired
     HttpServletRequest httpServletRequest;
 
+    @Autowired
+    IUserService userService;
+
+    @Autowired
+    ICategoryService categoryService;
+
+    @Autowired
+    ISellerService sellerService;
+
+    @Autowired
+    IShopService shopService;
+
     public static String CURRENT_ADMIN_SESSION = "currentAdminSession";
 
     // @AdminPermission(produceType = "application/json")
@@ -51,6 +67,12 @@ public class AdminController {
     @RequestMapping("/index")
     public ModelAndView index() {
         ModelAndView modelAndView = new ModelAndView("/admin/index");
+        modelAndView.addObject("userCount", userService.count());
+        modelAndView.addObject("shopCount",shopService.count());
+        modelAndView.addObject("categoryCount",categoryService.count());
+        modelAndView.addObject("sellerCount",sellerService.count());
+        modelAndView.addObject("CONTROLLER_NAME","admin");
+        modelAndView.addObject("ACTION_NAME","index");
         return modelAndView;
     }
 

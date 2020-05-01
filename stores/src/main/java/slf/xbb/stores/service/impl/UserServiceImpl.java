@@ -52,21 +52,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         return getById(user.getId());
     }
 
-    /*
-        QueryWrapper<User> queryWrapper = new QueryWrapper<User>();
-        // 2、名字中包含雨年并且龄大于等于20且小于等于40并且email不为空
-        //    name like '%雨%' and age between 20 and 40 and email is not null
-        // .select查询显示指定列
-        queryWrapper.select("name", "age").like("name", "雨").between("age", 20, 40).isNotNull("email");
-        List<User> users = userMapper.selectList(queryWrapper);
-        users.forEach(System.out::print);
-
-        LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.select(User::getName, User::getAge).like(User::getName, "斑斑");
-        List<User> userss = userMapper.selectList(lambdaQueryWrapper);
-        userss.forEach(System.out::print);
-     */
-
     @Override
     @Transactional
     public User login(String telphone, String unEncryptPassword) throws BussinessException, NoSuchAlgorithmException {
