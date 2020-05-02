@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import slf.xbb.stores.vo.PageQuery;
 import slf.xbb.stores.vo.RecommendReq;
+import slf.xbb.stores.vo.SearchReq;
 
 import javax.validation.constraints.Min;
 import java.time.LocalDateTime;
@@ -104,26 +105,27 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop> implements IS
 
     @Override
     public List<ShopBo> recommend(RecommendReq recommendReq) throws BussinessException {
-        // QueryWrapper<Shop> queryWrapper = new QueryWrapper<>();
-        // //
-        // // ,ceil(1 + 1000*(2 * 6378.137* ASIN(SQRT(POW(SIN(PI() * (#{latitude} - latitude) / 360), 2) + COS(PI() * #{latitude} / 180)
-        // // * COS(latitude* PI() / 180) * POW(SIN(PI() * (#{longitude} - longitude) / 360), 2))))) AS distance
-        // //     from shop order by (0.95*1/log10(distance)+ 0.05*remark_score/5)  DESC
-        // //
-        // // queryWrapper.or("id");
-        // List<Shop> shopList = shopMapper.selectList(queryWrapper);
+        // 实现1、将逻辑放在service中，取出list后进行排序判断等
+        QueryWrapper<Shop> queryWrapper = new QueryWrapper<>();
         //
-        // if (shopList == null) {
-        //     throw new BussinessException(EmBusinessError.NO_OBJECT_FOUND, "无合适推荐门店");
-        // }
-        // List<ShopBo> shopBoList = convertShopDoListToShopBoList(shopList);
-        // shopBoList.forEach(shopBo -> {
-        //     double distance = CommonUtils.getDistance(shopBo.getLongitude().doubleValue(), shopBo.getLatitude().doubleValue(), recommendReq.getLongitude().doubleValue(), recommendReq.getLatitude().doubleValue());
-        //     shopBo.setDistance(distance/1000);
-        // });
-        // shopBoList.forEach(shopBo -> {
-        //     System.out.println(shopBo.getDistance());
-        // });
+        // ,ceil(1 + 1000*(2 * 6378.137* ASIN(SQRT(POW(SIN(PI() * (#{latitude} - latitude) / 360), 2) + COS(PI() * #{latitude} / 180)
+        // * COS(latitude* PI() / 180) * POW(SIN(PI() * (#{longitude} - longitude) / 360), 2))))) AS distance
+        //     from shop order by (0.95*1/log10(distance)+ 0.05*remark_score/5)  DESC
+        //
+        queryWrapper.orderByDesc("id");
+        List<Shop> shopList = shopMapper.selectList(queryWrapper);
+
+        if (shopList == null) {
+            throw new BussinessException(EmBusinessError.NO_OBJECT_FOUND, "无合适推荐门店");
+        }
+        List<ShopBo> shopBoList = convertShopDoListToShopBoList(shopList);
+        shopBoList.forEach(shopBo -> {
+            double distance = CommonUtils.getDistance(shopBo.getLongitude().doubleValue(), shopBo.getLatitude().doubleValue(), recommendReq.getLongitude().doubleValue(), recommendReq.getLatitude().doubleValue());
+            shopBo.setDistance((int)distance);
+        });
+        shopBoList.forEach(shopBo -> {
+            System.out.println(shopBo.getDistance());
+        });
         //
         // Collections.sort(list, new Comparator<StuVO>() {
         //     @Override
@@ -133,11 +135,52 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop> implements IS
         //     }
         // });
 
+        // 实现2、直接在mapper中进行排序
+        // List<ShopBo> shopBoList = shopMapper.recommend(recommendReq);
 
-        List<ShopBo> shopBoList = shopMapper.recommend(recommendReq);
+
         return shopBoList;
     }
 
+    @Override
+    public List<ShopBo> search(SearchReq searchReq) throws BussinessException {
+        // 实现1、将逻辑放在service中，取出list后进行排序判断等
+        QueryWrapper<Shop> queryWrapper = new QueryWrapper<>();
+        //
+        // ,ceil(1 + 1000*(2 * 6378.137* ASIN(SQRT(POW(SIN(PI() * (#{latitude} - latitude) / 360), 2) + COS(PI() * #{latitude} / 180)
+        // * COS(latitude* PI() / 180) * POW(SIN(PI() * (#{longitude} - longitude) / 360), 2))))) AS distance
+        //     from shop order by (0.95*1/log10(distance)+ 0.05*remark_score/5)  DESC
+        //
+        queryWrapper.like("name",searchReq.getKeyword())
+                // .like("tags",searchReq.getKeyword())
+                .orderByDesc("id");
+        List<Shop> shopList = shopMapper.selectList(queryWrapper);
+
+        if (shopList == null) {
+            throw new BussinessException(EmBusinessError.NO_OBJECT_FOUND, "搜索不到合适门店");
+        }
+        List<ShopBo> shopBoList = convertShopDoListToShopBoList(shopList);
+        shopBoList.forEach(shopBo -> {
+            double distance = CommonUtils.getDistance(shopBo.getLongitude().doubleValue(), shopBo.getLatitude().doubleValue(), searchReq.getLongitude().doubleValue(), searchReq.getLatitude().doubleValue());
+            shopBo.setDistance((int)distance);
+        });
+        shopBoList.forEach(shopBo -> {
+            System.out.println(shopBo.getDistance());
+        });
+        //
+        // Collections.sort(list, new Comparator<StuVO>() {
+        //     @Override
+        //     public int compare(StuVO o1, StuVO o2) {
+        //         int i = o1.getScore() - o2.getScore();
+        //         return i;
+        //     }
+        // });
+
+        // 实现2、直接在mapper中进行搜索
+        // List<ShopBo> shopBoList = shopMapper.search(searchReq);
+
+        return shopBoList;
+    }
 
     private ShopBo convertShopDoToShopBo(Shop shop) {
         if (shop == null) {

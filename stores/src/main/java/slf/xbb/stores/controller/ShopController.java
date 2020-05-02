@@ -15,9 +15,12 @@ import slf.xbb.stores.common.EmBusinessError;
 import slf.xbb.stores.service.ICategoryService;
 import slf.xbb.stores.service.IShopService;
 import slf.xbb.stores.vo.RecommendReq;
+import slf.xbb.stores.vo.SearchReq;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * <p>
@@ -55,4 +58,17 @@ public class ShopController {
         return CommonReturnType.create(shopBoList);
     }
 
+
+    @RequestMapping("/search")
+    @ResponseBody
+    public CommonReturnType search(@Valid SearchReq searchReq, BindingResult bindingResult) throws BussinessException {
+        if (bindingResult.hasErrors()){
+            return CommonReturnType.create(EmBusinessError.PARAMETER_VALIDATION_ERROR, CommonUtils.processErrorString(bindingResult));
+        }
+        List<ShopBo> shopBoList = shopService.search(searchReq);
+        // 后续仍需扩展筛选，所以需要保存在map中
+        Map<String, Object> resMa = new ConcurrentHashMap<>();
+        resMa.put("shop", shopBoList);
+        return CommonReturnType.create(resMa);
+    }
 }
