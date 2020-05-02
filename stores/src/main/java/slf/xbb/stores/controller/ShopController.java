@@ -12,6 +12,7 @@ import slf.xbb.stores.common.BussinessException;
 import slf.xbb.stores.common.CommonReturnType;
 import slf.xbb.stores.common.CommonUtils;
 import slf.xbb.stores.common.EmBusinessError;
+import slf.xbb.stores.entity.Category;
 import slf.xbb.stores.service.ICategoryService;
 import slf.xbb.stores.service.IShopService;
 import slf.xbb.stores.vo.RecommendReq;
@@ -21,6 +22,7 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * <p>
@@ -66,9 +68,13 @@ public class ShopController {
             return CommonReturnType.create(EmBusinessError.PARAMETER_VALIDATION_ERROR, CommonUtils.processErrorString(bindingResult));
         }
         List<ShopBo> shopBoList = shopService.search(searchReq);
+        List<Category> categoryList = categoryService.list();
+        List<Map<String, Object>> tagsAggregation = shopService.searchGroupByTags(searchReq);
         // 后续仍需扩展筛选，所以需要保存在map中
-        Map<String, Object> resMa = new ConcurrentHashMap<>();
-        resMa.put("shop", shopBoList);
-        return CommonReturnType.create(resMa);
+        Map<String, Object> resultMap = new ConcurrentHashMap<>();
+        resultMap.put("shop", shopBoList);
+        resultMap.put("category", categoryList);
+        resultMap.put("tags", tagsAggregation);
+        return CommonReturnType.create(resultMap);
     }
 }

@@ -1,7 +1,10 @@
 package slf.xbb.stores.entity;
 
 import java.math.BigDecimal;
+
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.time.LocalDateTime;
 import java.io.Serializable;
@@ -30,8 +33,21 @@ public class Shop implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
+    /**
+     * MBP自动填充
+     * 是对所有表中有这两个字段，并且在实体类中的属性中设置了以下注解的表生效。
+     * @TableField(fill = FieldFill.INSERT)
+     * //insert语句生效 或者
+     * @TableField(fill = FieldFill.UPDATE)
+     * //update语句生效 或者
+     * @TableField(fill = FieldFill.INSERT_UPDATE)
+     * //insert和update语句都生效
+     * 还有你需要调用MP提供给你的操作实体的方法，例如insert,updateById等，不传实体的方法是不生效的。
+     */
+    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createdAt;
 
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updatedAt;
 
     private String name;

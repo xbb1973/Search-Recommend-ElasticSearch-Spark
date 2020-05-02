@@ -24,4 +24,10 @@ public class SearchReq {
 
     @NotBlank(message = "关键字不许为空")
     private String keyword;
+
+    private Integer orderBy;
+
+    private Integer categoryId;
+
+    private String tags;
 }

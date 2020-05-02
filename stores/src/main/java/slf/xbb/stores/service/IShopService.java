@@ -11,6 +11,7 @@ import slf.xbb.stores.vo.RecommendReq;
 import slf.xbb.stores.vo.SearchReq;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -27,4 +28,6 @@ public interface IShopService extends IService<Shop> {
     PageInfo<ShopBo> getPage(PageQuery pageQuery);
     List<ShopBo> recommend(RecommendReq recommendReq) throws BussinessException;
     List<ShopBo> search(SearchReq searchReq) throws BussinessException;
+    List<Map<String, Object>> searchGroupByTags(SearchReq searchReq) throws BussinessException;
+    List<Map<String, Object>> searchGroupByTags(List<ShopBo> shopBoList) throws BussinessException;
 }

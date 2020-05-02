@@ -8,6 +8,7 @@ import slf.xbb.stores.vo.SearchReq;
 import slf.xbb.stores.vo.ShopCreateReq;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -21,4 +22,5 @@ public interface ShopMapper extends BaseMapper<Shop> {
 
     List<ShopBo> recommend(RecommendReq recommendReq);
     List<ShopBo> search(SearchReq searchReq);
+    List<Map<String, Object>> searchGroupByTags(SearchReq searchReq);
 }
