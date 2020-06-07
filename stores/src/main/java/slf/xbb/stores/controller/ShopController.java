@@ -60,7 +60,6 @@ public class ShopController {
         return CommonReturnType.create(shopBoList);
     }
 
-
     @RequestMapping("/search")
     @ResponseBody
     public CommonReturnType search(@Valid SearchReq searchReq, BindingResult bindingResult) throws BussinessException {

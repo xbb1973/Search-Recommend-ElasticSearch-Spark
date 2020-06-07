@@ -1,8 +1,8 @@
 package slf.xbb.stores.controller.admin;
 
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -41,14 +41,24 @@ public class SellerController {
     @RequestMapping("/index")
     @AdminPermission
     public ModelAndView index(PageQuery pageQuery)  {
-        // 分页
-        PageHelper.startPage(pageQuery.getPage(), pageQuery.getSize());
-        //sellerService.list
-        List<Seller> sellerList = sellerService.list();
-        PageInfo<Seller> sellerPageInfo = new PageInfo<>(sellerList);
+        // 分页查询
+
+        // // 1、使用PageHelper插件
+        // PageHelper.startPage(pageQuery.getPage(), pageQuery.getSize());
+        // //sellerService.list
+        // List<Seller> sellerList = sellerService.list();
+        // PageInfo<Seller> sellerPageInfo = new PageInfo<>(sellerList);
+
+        // 2、使用MyBatisPlus的通用Mapper
+        Page<Seller> querySellerPage = new Page<>(pageQuery.getPage(), pageQuery.getSize());
+        IPage<Seller> sellerPage = sellerService.page(querySellerPage);
+
+        // 3、使用MyBatisPlus的自定义分页
+        // IPage<Seller> sellerPage = sellerService.selectSellerPage(querySellerPage, 1);
 
         ModelAndView modelAndView = new ModelAndView("/seller/index.html");
-        modelAndView.addObject("data", sellerPageInfo);
+        // modelAndView.addObject("data", sellerPageInfo);
+        modelAndView.addObject("data", sellerPage);
         modelAndView.addObject(controllerAttributeName, controllerAttributeValue);
         modelAndView.addObject(controllerAttributeValue, "index");
         return modelAndView;

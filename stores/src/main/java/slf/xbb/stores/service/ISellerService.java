@@ -1,5 +1,7 @@
 package slf.xbb.stores.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import slf.xbb.stores.common.BussinessException;
 import slf.xbb.stores.entity.Seller;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -19,4 +21,5 @@ public interface ISellerService extends IService<Seller> {
     // List<Seller> listSellers();
     Seller create(Seller seller);
     Seller changeStatus(Integer id, Integer diableFlag) throws BussinessException;
+    IPage<Seller> selectSellerPage(Page<Seller> page, Integer state);
 }

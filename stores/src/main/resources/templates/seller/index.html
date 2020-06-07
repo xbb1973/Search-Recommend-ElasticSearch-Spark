@@ -105,7 +105,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="seller:${data.list}">
+<!--                                <tr th:each="seller:${data.list}">-->
+                                <tr th:each="seller:${data.records}">
                                     <td th:text="${seller.id}"></td>
                                     <td th:text="${seller.name}"></td>
                                     <td th:text="${seller.remarkScore}"></td>
@@ -186,10 +187,21 @@ License: You must have a valid license purchased only from themeforest(the above
 
         var baseUrl = "/admin/seller/index?page="
         setUrl(baseUrl);
+
+        // 使用PageHelper的分页参数
+        // PageInfo
+        // protected List<T> list;
+        // protected long total;
+        // private int pageSize;
+        // private int pageNum;
+        // private int pages;
+
+        // 使用MybatisPlus的分页参数
         var totalSize = /*[[${data.total}]]*/;
-        var countPerPage = /*[[${data.pageSize}]]*/;
-        var currentPage = /*[[${data.pageNum}]]*/;
-        var allPage = /*[[${data.pages}]]*/;
+        var countPerPage = /*[[${data.size}]]*/;
+        var currentPage = /*[[${data.current}]]*/;
+        var allPage = /*[[${data.getPages()}]]*/;
+
         setPage(document.getElementById("page-container"),allPage,currentPage);
         if(allPage <= 1){
             $("#page-container").hide();
