@@ -71,7 +71,7 @@ public class MyBatisPlusConfiguration {
     // 4、性能分析插件，SQL执行效率插件
     // 该插件 3.2.0 以上版本移除推荐使用第三方扩展 执行SQL分析打印 功能
     @Bean
-    // @Profile({"dev","test"})// 设置 dev test 环境开启
+    @Profile({"dev","test"})// 设置 dev test 环境开启
     public PerformanceInterceptor performanceInterceptor() {
 
         PerformanceInterceptor performanceInterceptor = new PerformanceInterceptor();

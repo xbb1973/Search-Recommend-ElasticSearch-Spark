@@ -19,6 +19,7 @@ import slf.xbb.stores.vo.RecommendReq;
 import slf.xbb.stores.vo.SearchReq;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -62,12 +63,14 @@ public class ShopController {
 
     @RequestMapping("/search")
     @ResponseBody
-    public CommonReturnType search(@Valid SearchReq searchReq, BindingResult bindingResult) throws BussinessException {
+    public CommonReturnType search(@Valid SearchReq searchReq, BindingResult bindingResult) throws BussinessException, IOException {
         if (bindingResult.hasErrors()){
             return CommonReturnType.create(EmBusinessError.PARAMETER_VALIDATION_ERROR, CommonUtils.processErrorString(bindingResult));
         }
-        List<ShopBo> shopBoList = shopService.search(searchReq);
+        List<ShopBo> shopBoList = shopService.searchES(searchReq);
+        // List<ShopBo> shopBoList = shopService.search(searchReq);
         List<Category> categoryList = categoryService.list();
+        // 后续改进，通过ES搜索后获取到以及分词成功的tags，而不是使用数据库的sql语句。。。
         List<Map<String, Object>> tagsAggregation = shopService.searchGroupByTags(searchReq);
         // 后续仍需扩展筛选，所以需要保存在map中
         Map<String, Object> resultMap = new ConcurrentHashMap<>();

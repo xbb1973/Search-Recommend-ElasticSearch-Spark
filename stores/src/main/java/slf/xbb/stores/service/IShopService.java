@@ -10,6 +10,7 @@ import slf.xbb.stores.vo.PageQuery;
 import slf.xbb.stores.vo.RecommendReq;
 import slf.xbb.stores.vo.SearchReq;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -30,4 +31,5 @@ public interface IShopService extends IService<Shop> {
     List<ShopBo> search(SearchReq searchReq) throws BussinessException;
     List<Map<String, Object>> searchGroupByTags(SearchReq searchReq) throws BussinessException;
     List<Map<String, Object>> searchGroupByTags(List<ShopBo> shopBoList) throws BussinessException;
+    List<ShopBo> searchES(SearchReq searchReq) throws BussinessException, IOException;
 }
