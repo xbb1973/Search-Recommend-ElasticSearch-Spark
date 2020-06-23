@@ -28,6 +28,8 @@ import slf.xbb.stores.entity.Category;
 import slf.xbb.stores.entity.Seller;
 import slf.xbb.stores.entity.Shop;
 import slf.xbb.stores.mapper.ShopMapper;
+import slf.xbb.stores.recommoend.RecommendService;
+import slf.xbb.stores.recommoend.RecommondSortService;
 import slf.xbb.stores.service.ICategoryService;
 import slf.xbb.stores.service.ISellerService;
 import slf.xbb.stores.service.IShopService;
@@ -75,6 +77,12 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop> implements IS
 
     @Autowired
     private RestHighLevelClient restHighLevelClient;
+
+    @Autowired
+    private RecommendService recommendService;
+
+    @Autowired
+    private RecommondSortService recommondSortService;
 
     @Override
     @Transactional
@@ -160,6 +168,21 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop> implements IS
         // List<ShopBo> shopBoList = shopMapper.recommend(recommendReq);
 
 
+        return shopBoList;
+    }
+
+    @Override
+    public List<ShopBo> recommendSpark(RecommendReq recommendReq) throws BussinessException {
+
+        List<Integer> shopIdList = recommendService.recall(148);
+        shopIdList = recommondSortService.sort(shopIdList, 148, "LR");
+        List<ShopBo> shopBoList = shopIdList.stream().map(id -> {
+            ShopBo shopBo = get(id);
+            // 暂时写死icon和distance
+            shopBo.setIconUrl("/static/image/shopcover/xchg.jpg");
+            shopBo.setDistance(100);
+            return shopBo;
+        }).collect(Collectors.toList());
         return shopBoList;
     }
 
@@ -550,31 +573,32 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop> implements IS
     }
 
     //构造分词函数识别器
-    private Map<String,Object> analyzeCategoryKeyword(String keyword) throws IOException {
-        Map<String,Object> res = new HashMap<>();
+    private Map<String, Object> analyzeCategoryKeyword(String keyword) throws IOException {
+        Map<String, Object> res = new HashMap<>();
 
-        Request request = new Request("GET","/shop/_analyze");
-        request.setJsonEntity("{" + "  \"field\": \"name\"," + "  \"text\":\""+keyword+"\"\n" + "}");
+        Request request = new Request("GET", "/shop/_analyze");
+        request.setJsonEntity("{" + "  \"field\": \"name\"," + "  \"text\":\"" + keyword + "\"\n" + "}");
         Response response = restHighLevelClient.getLowLevelClient().performRequest(request);
         String responseStr = EntityUtils.toString(response.getEntity());
         JSONObject jsonObject = JSONObject.parseObject(responseStr);
         JSONArray jsonArray = jsonObject.getJSONArray("tokens");
-        for(int i = 0; i < jsonArray.size(); i++){
+        for (int i = 0; i < jsonArray.size(); i++) {
             String token = jsonArray.getJSONObject(i).getString("token");
             Integer categoryId = getCategoryIdByToken(token);
-            if(categoryId != null){
-                res.put(token,categoryId);
+            if (categoryId != null) {
+                res.put(token, categoryId);
             }
         }
 
         return res;
     }
 
-    private Map<Integer,List<String>> categoryWorkMap = new HashMap<>();
-    private Integer getCategoryIdByToken(String token){
-        for(Integer key : categoryWorkMap.keySet()){
+    private Map<Integer, List<String>> categoryWorkMap = new HashMap<>();
+
+    private Integer getCategoryIdByToken(String token) {
+        for (Integer key : categoryWorkMap.keySet()) {
             List<String> tokenList = categoryWorkMap.get(key);
-            if(tokenList.contains(token)){
+            if (tokenList.contains(token)) {
                 return key;
             }
         }
@@ -595,7 +619,7 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop> implements IS
         if (shopBoList == null) {
             return null;
         }
-        List<Map<String, Object>> mapList = new ArrayList<>()<>();
+        List<Map<String, Object>> mapList = new ArrayList<>();
         Map<String, Object> map = new HashMap<>();
         shopBoList.stream().map(ShopBo::getTags).forEach(shopBoTags -> {
             Integer count = (Integer) map.get(shopBoTags);

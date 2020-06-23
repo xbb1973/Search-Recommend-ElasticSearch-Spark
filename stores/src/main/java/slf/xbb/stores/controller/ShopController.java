@@ -57,7 +57,8 @@ public class ShopController {
         if (bindingResult.hasErrors()){
             return CommonReturnType.create(EmBusinessError.PARAMETER_VALIDATION_ERROR, CommonUtils.processErrorString(bindingResult));
         }
-        List<ShopBo> shopBoList = shopService.recommend(recommendReq);
+        // List<ShopBo> shopBoList = shopService.recommend(recommendReq);
+        List<ShopBo> shopBoList = shopService.recommendSpark(recommendReq);
         return CommonReturnType.create(shopBoList);
     }
 

@@ -28,6 +28,7 @@ public interface IShopService extends IService<Shop> {
     List<ShopBo> getShopList();
     PageInfo<ShopBo> getPage(PageQuery pageQuery);
     List<ShopBo> recommend(RecommendReq recommendReq) throws BussinessException;
+    List<ShopBo> recommendSpark(RecommendReq recommendReq) throws BussinessException;
     List<ShopBo> search(SearchReq searchReq) throws BussinessException;
     List<Map<String, Object>> searchGroupByTags(SearchReq searchReq) throws BussinessException;
     List<Map<String, Object>> searchGroupByTags(List<ShopBo> shopBoList) throws BussinessException;

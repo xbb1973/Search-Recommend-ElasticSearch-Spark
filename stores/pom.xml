@@ -72,13 +72,8 @@
         <!--    <artifactId>pagehelper-spring-boot-starter</artifactId>-->
         <!--    <version>${pagehelper.version}</version>-->
         <!--</dependency>-->
-        <!-- https://mvnrepository.com/artifact/org.apache.spark/spark-mllib -->
-        <dependency>
-            <groupId>org.apache.spark</groupId>
-            <artifactId>spark-mllib_2.12</artifactId>
-            <version>2.4.5</version>
-            <scope>runtime</scope>
-        </dependency>
+
+
         <!-- https://mvnrepository.com/artifact/org.elasticsearch/elasticsearch -->
         <dependency>
             <groupId>org.elasticsearch</groupId>
@@ -98,7 +93,28 @@
             <version>7.7.1</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-mllib_2.12</artifactId>
+            <version>2.4.4</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.guava</groupId>
+                    <artifactId>guava</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>14.0.1</version>
+        </dependency>
 
+        <dependency>
+            <groupId>org.codehaus.janino</groupId>
+            <artifactId>janino</artifactId>
+            <version>3.0.8</version>
+        </dependency>
 
     </dependencies>
 
